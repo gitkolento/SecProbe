@@ -1,0 +1,12 @@
+[
+    {
+        "name": "（填入用于‘文本质量打分’模型名称，如gpt-4o-mini）",
+        "url": "（填入API地址）",
+        "api_key": "（填入API密钥）"
+    },
+    {
+        "name": "（填入用于‘余弦相似度’计算的模型名称，如text-embedding-3-large）",
+        "url": "（填入API地址）",
+        "api_key": "（填入API密钥）"
+    }
+]

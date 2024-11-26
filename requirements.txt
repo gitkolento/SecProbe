@@ -1,0 +1,9 @@
+streamlit
+requests
+autogen
+pandas
+numpy
+plotly
+rouge
+nltk
+jieba
