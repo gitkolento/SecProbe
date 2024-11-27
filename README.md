@@ -80,7 +80,7 @@ streamlit run SecProbe.py
 题库配置：对于**实战技能演练任务**测试题库，需要为每道测试题目配置相应的靶场 URL 信息  
 *注意：靶场环境需要保持在线并可访问，用户可以自行搭建本地靶场或使用在线靶场*（如 ctfhub 等）
 
-以[ ctfhub ](https://www.ctfhub.com/)为例，开启靶场环境后将目标 URL 填入测试题库，配置完成后即可进行模型评测
+以 [ctfhub](https://www.ctfhub.com/) 为例，开启靶场环境后将目标 URL 填入测试题库，配置完成后即可进行模型评测
 
 <div align="center">
   <img src="./assets/靶场.png" alt="SecProbe"/>
